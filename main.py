@@ -9,7 +9,6 @@ TOKEN = os.getenv("TOKEN")
 
 app = ApplicationBuilder().token(TOKEN).build()
 
-# Пример команды /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("Сделать аву", callback_data="make_ava")],
@@ -18,11 +17,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text(
-        f"👋 Привет, {update.effective_user.first_name or 'друг'}!\nЧем тебе помочь?",
+        "👋 Привет, {}!\nЧем тебе помочь?".format(update.effective_user.first_name or "друг"),
         reply_markup=markup
     )
 
-# Заглушка для обработки кнопок
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -30,6 +28,4 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CallbackQueryHandler(handle_button))
-
 app.run_polling()
-
